@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add Remove Select Box Fields Dynamically using jQuery Ajax in PHP</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<style>
+    body {
+        background-image: url(img/bg.jpg);
+        padding-top: 99px;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        position: relative;
+    }
+
+    /*
+    .image {
+        position: relative;
+        width: 100%;
+    }
+*/
+
+    h2 {
+        position: absolute;
+        top: 5px;
+        width: 100%;
+    }
+
+    h2 span {
+        color: whitesmoke;
+        font: bold 40px Helvetica, Sans-Serif;
+        letter-spacing: -1px;
+        /*        background: rgb(0, 0, 0);*/
+        /* fallback color */
+        background: rgba(0, 0, 0, 0.7);
+        padding: 10px;
+    }
+
+
+    input {
+        text-align: center;
+    }
+
+    .player {
+        font: 18px Helvetica, Sans-Serif;
+    }
+
+</style>
+
+<body>
+
+    <h2 class="text-center"><span>Lakdi Lagi🤣😂</span></h2>
+    <div class="" style="padding: 3%">
+
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="background-color: white">
+            <br />
+            <form method="post" id="insert_form">
+                <div class="table-repsonsive" style="opacity: 1;background: white">
+                    <span id="error"></span>
+                    <table class="table table-bordered" id="item_table">
+                        <tr class="bg-primary">
+                            <th>#</th>
+                            <td><input type="text" name="playerOne" id="playerOne" placeholder="Player One" class="form-control player" /></td>
+                            <td><input type="text" name="playerTwo" id="playerTwo" placeholder="Player Two" class="form-control player" /></td>
+                            <td><input type="text" name="playerThree" id="playerThree" placeholder="Player Three" class="form-control player" /></td>
+                            <td><input type="text" name="playerFour" id="playerFour" placeholder="Player Four" class="form-control player" /></td>
+                            <th><button type="button" name="add" class="btn btn-success btn-sm add"><span class="glyphicon glyphicon-plus"></span></button></th>
+                        </tr>
+                    </table>
+                    <div align="center">
+                        <button type="button" name="submit" class="btn btn-danger player" value="Insert" id="result">Result</button>
+
+                    </div>
+                    <br>
+                    <br>
+                </div>
+            </form>
+
+
+            <div id="columnchart_material col-md-offset-3 col-xs-offset-3 col-sm-offset-3 col-md-4 col-xs-6 col-sm-6" style="width: 400px; height: 300px;"></div>
+            <br>
+        </div>
+    </div>
+
+    <!--    <div id="donutchart" style="width: 900px; height: 500px;"></div>-->
+
+
+    <script>
+        $(document).ready(function() {
+            var i = 0;
+            var j = 0;
+            var addValues = 0;
+            $(document).on('click', '.add', function() {
+                $("#score").closest('tr').remove();
+                $("input").attr('disabled', 'disabled');
+                var html = '';
+                html += '<tr>';
+                html += '<td>' + (i + 1) + '</td>';
+                html += '<td><input type="number" id="first_name' + i + '" class="form-control first_name' + i + '" onfocusout="myFunctionX(this.value,' + i + ')"/></td>';
+                html += '<td><input type="number" id="second_name' + i + '" class="form-control second_name' + i + '"  onfocusout="myFunctionY(this.value,' + i + ')"/></td>';
+                html += '<td><input type="number" id="third_name' + i + '" class="form-control third_name' + i + '" onfocusout="myFunctionZ(this.value,' + i + ')"/></td>';
+                html += '<td><input type="number" id="forth_name' + i + '" class="form-control forth_name' + i + '" onfocusout="myFunctionW(this.value,' + i + ')"/></td>';
+                html += '<td><button type="button" name="remove" class="btn btn-danger btn-sm remove"><span class="glyphicon glyphicon-pencil" onclick="edit(' + i + ')"></span></button></td></tr>';
+                $('#item_table').append(html);
+                i = i + 1;
+            });
+
+
+            //            $(document).on('click', '.remove', function() {
+            //                //                $(this).closest('tr').change();
+            //                //                $("input").attr('disable', false);
+            //                console.log("remove");
+            //                $("input").removeAttr('disabled');
+            //
+            //            });
+
+
+            //            $("input:number").attr("maxlength", 2);
+
+
+            $('#first_name').each(function() {
+                var count = 1;
+                if ($(this).val() == '') {
+                    error += "<p>Enter Item Name at " + count + " Row</p>";
+                    return false;
+                }
+                count = count + 1;
+            });
+
+            $('#second_name').each(function() {
+                var count = 1;
+                if ($(this).val() == '') {
+                    error += "<p>Enter Item Name at " + count + " Row</p>";
+                    return false;
+                }
+                count = count + 1;
+            });
+
+            $('#third_name').each(function() {
+                var count = 1;
+                if ($(this).val() == '') {
+                    error += "<p>Enter Item Name at " + count + " Row</p>";
+                    return false;
+                }
+                count = count + 1;
+            });
+
+            $('#forth_name').each(function() {
+                var count = 1;
+                if ($(this).val() == '') {
+                    error += "<p>Enter Item Name at " + count + " Row</p>";
+                    return false;
+                }
+                count = count + 1;
+            });
+
+
+
+            $(document).on('click', '#result', function() {
+                var p1 = 0;
+                var p2 = 0;
+                var p3 = 0;
+                var p4 = 0;
+                for (k = 0; k < i; k++) {
+                    var getPlayerOne = document.getElementById("first_name" + (k));
+                    p1 = j + parseInt(getPlayerOne.value);
+                }
+
+                //                console.log(document.getElementById("playerOne").value);
+                console.log("for loop first", p1);
+
+                for (l = 0; l < i; l++) {
+                    var getPlayerTwo = document.getElementById("second_name" + (l));
+                    p2 = p2 + parseInt(getPlayerTwo.value);
+                }
+                console.log("for loop second ", p2);
+
+                for (m = 0; m < i; m++) {
+                    var getPlayerThree = document.getElementById("third_name" + (m));
+                    p3 = p3 + parseInt(getPlayerThree.value);
+                }
+                console.log("for loop third ", p3);
+
+                for (n = 0; n < i; n++) {
+                    var getPlayerFour = document.getElementById("forth_name" + (n));
+                    p4 = p4 + parseInt(getPlayerFour.value);
+                }
+                console.log("for loop fourth ", p4);
+
+                var w1 = "";
+                var w2 = "";
+                var w3 = "";
+                var w4 = "";
+                if (p1 > p2 && p1 > p3 && p1 > p4) {
+                    w1 = document.getElementById("playerOne").value;
+                    console.log(w1 + " is winner");
+                } else if (p2 > p1 && p2 > p3 && p2 > p4) {
+                    w2 = document.getElementById("playerTwo").value;
+                    console.log(w2 + " is winner");
+                } else if (p3 > p1 && p3 > p2 && p3 > p4) {
+                    w3 = document.getElementById("playerThree").value;
+                    console.log(w3 + " is winner");
+                } else {
+                    w4 = document.getElementById("playerFour").value;
+                    console.log(w4 + " is winner");
+                }
+
+                $("#score").closest('tr').remove();
+
+                var html;
+                html += '<tr class="bg-primary" id="score">';
+                html += '<td>Score</td>';
+                html += '<td class="text-center">' + p1 + '</td>';
+                html += '<td class="text-center">' + p2 + '</td>';
+                html += '<td class="text-center">' + p3 + '</td>';
+                html += '<td class="text-center">' + p4 + '</td>';
+                html += '<td class="text-center" id="editCount">' + (add() - 1) + '</td></tr>';
+                $('#item_table').append(html);
+
+                var v1 = document.getElementById("playerOne").value;
+                var v2 = document.getElementById("playerTwo").value;
+                var v3 = document.getElementById("playerThree").value;
+                var v4 = document.getElementById("playerFour").value;
+
+                google.charts.setOnLoadCallback(drawChart);
+
+                function drawChart() {
+                    var data = google.visualization.arrayToDataTable([
+                        ['Players', v1, v2, v3, v4],
+                        ['Score', p1, p2, p3, p4],
+                    ]);
+
+                    var options = {
+                        chart: {
+                            title: 'Player Performance',
+                            //                            subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+                        }
+                    };
+
+                    var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+
+                    chart.draw(data, google.charts.Bar.convertOptions(options));
+                }
+
+            });
+
+
+        });
+
+        function edit(i) {
+            $("#first_name" + i).removeAttr('disabled');
+            $("#second_name" + i).removeAttr('disabled');
+            $("#third_name" + i).removeAttr('disabled');
+            $("#forth_name" + i).removeAttr('disabled');
+            console.log("edit " + i);
+            countEdit();
+        }
+
+        function myFunctionX(inputValue, i) {
+            if (inputValue < 0) {
+                var x = document.getElementById("first_name" + i);
+                x.style.color = 'white';
+                x.style.backgroundColor = '#ed1c24';
+            }
+
+        }
+
+        function myFunctionY(inputValue, i) {
+            if (inputValue < 0) {
+                console.log("y ", i);
+                var y = document.getElementById("second_name" + i);
+                y.style.color = 'white';
+                y.style.backgroundColor = '#ed1c24';
+            }
+        }
+
+        function myFunctionZ(inputValue, i) {
+            if (inputValue < 0) {
+                var z = document.getElementById("third_name" + i);
+                z.style.color = 'white';
+                z.style.backgroundColor = '#ed1c24';
+            }
+        }
+
+        function myFunctionW(inputValue, i) {
+            if (inputValue < 0) {
+                var w = document.getElementById("forth_name" + i);
+                w.style.color = 'white';
+                w.style.backgroundColor = '#ed1c24';
+            }
+        }
+
+
+
+        var add = (function() {
+            var counter = 0;
+            return function() {
+                return counter += 1;
+            }
+        })();
+
+        function countEdit() {
+            console.log(add());
+        }
+
+
+        window.addEventListener("beforeunload", function(event) {
+            event.returnValue = "Your custom message.";
+        });
+
+    </script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script type="text/javascript">
+        google.charts.load('current', {
+            'packages': ['bar']
+        });
+
+    </script>
+
+
+</body>
+
+</html>
